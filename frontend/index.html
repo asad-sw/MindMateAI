@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindMate AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 MindMate AI</h1>
+    <p>Your mental health triage assistant</p>
+
+    <form id="intake-form">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" required />
+
+      <label for="symptoms">Describe how you’ve been feeling lately:</label>
+      <textarea id="symptoms" name="symptoms" rows="4" required></textarea>
+
+      <button type="submit">Start AI Triage</button>
+    </form>
+
+    <div id="ai-response"></div>
+
+    <!-- Optional: IBM Watson Assistant Integration -->
+    <!--
+    <div id="watson-assistant"></div>
+    <script>
+      // Watson Assistant Embed Code can go here
+    </script>
+    -->
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
