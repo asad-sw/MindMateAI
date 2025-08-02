@@ -16,15 +16,15 @@ def analyze():
     symptoms = data.get('symptoms', '').strip()
 
     if not name or not age or not symptoms:
-        return jsonify({"message": "All fields are required.", "status": "error"}), 400
+        return jsonify({"status": "error", "message": "Please fill in all fields."}), 400
 
-    keywords = ['sad', 'tired', 'hopeless', 'anxious', 'anxiety', 'stressed']
+    keywords = ['anxious', 'anxiety', 'tired', 'hopeless', 'stressed']
     if any(word in symptoms.lower() for word in keywords):
-        message = f"{name}, it may be helpful to speak with a mental health professional soon."
+        recommendation = f"{name}, it may be helpful to speak with a mental health professional soon."
     else:
-        message = f"{name}, your response seems okay. Still, prioritizing your well-being is important."
+        recommendation = f"{name}, your response seems okay, but always prioritize mental wellness."
 
-    return jsonify({"message": message, "status": "success"})
+    return jsonify({"status": "success", "message": recommendation})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True)

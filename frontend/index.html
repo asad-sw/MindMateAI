@@ -1,41 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MindMate AI</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMate AI - Mental Health Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h1>🧠 MindMate AI</h1>
-    <p>Your mental health triage assistant</p>
 
-    <form id="intake-form">
-      <label for="name">Full Name:</label>
-      <input type="text" id="name" name="name" required />
+    <div class="container">
+        <header>
+            <h1>MindMate AI</h1>
+            <p>Your first step toward understanding your mental health.</p>
+        </header>
 
-      <label for="age">Age:</label>
-      <input type="number" id="age" name="age" required />
+        <main>
+            <form id="symptom-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="e.g., Ibrahim Fofanah" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" placeholder="e.g., 28" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="symptoms">Describe how you're feeling</label>
+                    <textarea id="symptoms" name="symptoms" rows="6" placeholder="e.g., I've been feeling anxious and having trouble sleeping..." required></textarea>
+                </div>
+                <button type="submit" id="submit-btn">Get Recommendation</button>
+            </form>
 
-      <label for="symptoms">Describe how you’ve been feeling lately:</label>
-      <textarea id="symptoms" name="symptoms" rows="4" required></textarea>
+            <div id="response-container" class="hidden">
+                <h2>Recommendation</h2>
+                <p id="response-message"></p>
+            </div>
 
-      <button type="submit">Start AI Triage</button>
-    </form>
+            <div id="error-container" class="hidden">
+                <p id="error-message"></p>
+            </div>
+        </main>
 
-    <div id="ai-response"></div>
+        <!-- Bonus: Watson Assistant Placeholder -->
+        <aside id="watson-placeholder">
+            <div class="watson-icon">
+                <!-- A simple chat bubble icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+            <div class="watson-text">
+                <h3>Talk to an Assistant</h3>
+                <p>Coming soon: Chat with our AI assistant powered by IBM Watson for real-time support.</p>
+            </div>
+        </aside>
 
-    <!-- Optional: IBM Watson Assistant Integration -->
-    <!--
-    <div id="watson-assistant"></div>
-    <script>
-      // Watson Assistant Embed Code can go here
-    </script>
-    -->
+        <footer>
+            <p>Disclaimer: MindMate AI is not a substitute for professional medical advice.</p>
+        </footer>
+    </div>
 
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
