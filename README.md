@@ -5,7 +5,7 @@ Built for the **IBM TechXchange 2025 Hackathon – Build with Agentic AI Challen
 ---
 
 ## 📌 Overview  
-**MindMate AI** is an intelligent assistant designed to support mental health triage in community clinics and under-resourced healthcare settings. It automates pre-visit intake, screens for psychological distress, and provides recommendations using IBM's watsonx™ platform. Our goal is to reduce staff burden, improve patient flow, and ensure timely intervention for those in need.
+MindMate AI is an intelligent assistant designed to support mental health triage in community clinics and under-resourced healthcare settings. It automates pre-visit intake, screens for psychological distress, and provides recommendations using IBM's watsonx™ platform. Our goal is to reduce staff burden, improve patient flow, and ensure timely intervention for those in need.
 
 ---
 
@@ -13,7 +13,7 @@ Built for the **IBM TechXchange 2025 Hackathon – Build with Agentic AI Challen
 Clinics in underserved areas face challenges like:  
 - Limited staff availability  
 - High patient load  
-- Delayed recognition of urgent mental health cases  
+- Delayed recognition of urgent mental health cases
 
 MindMate AI helps address this by offering an agentic AI that:  
 - Collects patient input via natural conversation  
@@ -35,18 +35,25 @@ MindMate AI helps address this by offering an agentic AI that:
 ---
 
 ## 🛠 Tech Stack  
-- **IBM watsonx.ai** for agentic AI logic  
-- **IBM watsonx Assistant** for NLP-powered chatbot  
-- **Python (Flask)** or **Node.js** backend  
-- **React.js / HTML / CSS** frontend  
-- **GitHub** for version control and collaboration  
-- (Optional) **watsonx.data** or **Firebase** for storing triage records securely
+- **IBM watsonx.ai** – Agentic AI logic  
+- **IBM watsonx Assistant** – NLP-powered chatbot  
+- **Python (Flask)** – Backend  
+- **React.js / HTML / CSS** – Frontend  
+- **GitHub** – Version control and collaboration  
+- *(Optional)* **watsonx.data** or **Firebase** – Secure triage record storage
+
+---
+
+## 👥 The Team — NextGen Thinkers  
+- **Ibrahim Fofanah** – Team Lead  
+- **Sourabh Pandya** – General Member  
+- **Mati Ullah** – General Member  
 
 ---
 
 ## 🚀 Getting Started
 
+### 1. Clone the Repository
 ```bash
-# Clone the repository
 git clone https://github.com/Denis060/MindMate-AI.git
 cd MindMate-AI
