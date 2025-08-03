@@ -2,100 +2,85 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Element References ---
     const symptomForm = document.getElementById('symptom-form');
     const submitButton = document.getElementById('submit-btn');
-    const responseContainer = document.getElementById('response-container');
-    const responseMessage = document.getElementById('response-message');
+    const buttonText = submitButton.querySelector('.button-text');
+    const buttonLoader = submitButton.querySelector('.loader');
+
+    const resultView = document.getElementById('result-view');
+    const responseMessage = resultView.querySelector('#response-message');
+    const severityIndicator = document.getElementById('severity-indicator');
+    
     const errorContainer = document.getElementById('error-container');
     const errorMessage = document.getElementById('error-message');
 
+    const newSubmissionButton = document.getElementById('new-submission-btn');
+
     // --- Backend API Configuration ---
-    // This is the URL where your Flask backend is running.
     const BACKEND_URL = 'http://127.0.0.1:5000';
 
-    /**
-     * Hides all message containers (response and error).
-     */
-    const hideMessages = () => {
-        responseContainer.classList.add('hidden');
-        errorContainer.classList.add('hidden');
+    const showLoader = () => {
+        buttonText.textContent = 'Analyzing...';
+        buttonLoader.classList.remove('hidden');
+        submitButton.disabled = true;
     };
 
-    /**
-     * Displays a success message from the backend.
-     * @param {string} message - The message to display.
-     */
-    const showSuccessMessage = (message) => {
-        hideMessages();
-        responseMessage.textContent = message;
-        responseContainer.classList.remove('hidden');
+    const hideLoader = () => {
+        buttonText.textContent = 'Get Recommendation';
+        buttonLoader.classList.add('hidden');
+        submitButton.disabled = false;
     };
 
-    /**
-     * Displays an error message.
-     * @param {string} message - The error message to display.
-     */
-    const showErrorMessage = (message) => {
-        hideMessages();
-        errorMessage.textContent = message;
-        errorContainer.classList.remove('hidden');
-    };
-
-    /**
-     * Handles the form submission event.
-     * @param {Event} event - The form submission event.
-     */
     const handleFormSubmit = async (event) => {
-        event.preventDefault(); // Prevent the default form submission
-        hideMessages();
+        event.preventDefault();
+        errorContainer.classList.add('hidden');
+        showLoader();
 
-        // --- Get Form Data ---
         const formData = new FormData(symptomForm);
         const name = formData.get('name');
         const age = formData.get('age');
         const symptoms = formData.get('symptoms');
 
-        // --- Prepare for API Call ---
-        submitButton.disabled = true;
-        submitButton.textContent = 'Analyzing...';
-
         try {
-            // --- Make the API Request ---
             const response = await fetch(`${BACKEND_URL}/analyze`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, age, symptoms }),
             });
 
-            // --- Handle Non-OK Responses ---
             if (!response.ok) {
-                // Try to get a specific error message from the backend
-                const errorData = await response.json().catch(() => null);
-                const detail = errorData ? errorData.error : `HTTP error! Status: ${response.status}`;
-                throw new Error(detail);
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
             }
 
-            // --- Handle Successful Responses ---
             const result = await response.json();
             if (result.status === 'success') {
-                showSuccessMessage(result.message);
-                symptomForm.reset(); // Clear the form on success
+                // Handle both message and severity from the API response
+                responseMessage.textContent = result.message;
+                severityIndicator.textContent = `Severity: ${result.severity}`;
+                
+                // Reset classes and add the new one for color-coding
+                severityIndicator.className = 'severity-indicator'; 
+                severityIndicator.classList.add(`severity-${result.severity.toLowerCase().replace(' ', '-')}`);
+
+                resultView.classList.remove('hidden');
+                symptomForm.classList.add('hidden');
             } else {
-                // Handle cases where the request succeeded but the app returned an error
-                showErrorMessage(result.message || 'An unknown application error occurred.');
+                throw new Error(result.message || 'An unknown application error occurred.');
             }
 
         } catch (error) {
-            // --- Handle Network or Fetch Errors ---
-            console.error('Fetch Error:', error);
-            showErrorMessage(`Could not connect to the backend. Please ensure it's running and accessible. Details: ${error.message}`);
+            errorMessage.textContent = `Error: ${error.message}`;
+            errorContainer.classList.remove('hidden');
         } finally {
-            // --- Reset Button State ---
-            submitButton.disabled = false;
-            submitButton.textContent = 'Get Recommendation';
+            hideLoader();
         }
     };
 
-    // --- Event Listener ---
+    const handleNewSubmission = () => {
+        resultView.classList.add('hidden');
+        symptomForm.reset();
+        symptomForm.classList.remove('hidden');
+    };
+
     symptomForm.addEventListener('submit', handleFormSubmit);
+    newSubmissionButton.addEventListener('click', handleNewSubmission);
 });

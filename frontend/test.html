@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - MindMate AI</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #response-container { 
+            margin-top: 20px; 
+            padding: 15px; 
+            background-color: #e8f6f3; 
+            border-left: 5px solid #1abc9c; 
+            border-radius: 4px;
+            display: none;
+        }
+        #error-container { 
+            margin-top: 20px; 
+            padding: 15px; 
+            background-color: #fbeee6; 
+            border-left: 5px solid #e74c3c; 
+            border-radius: 4px;
+            display: none;
+        }
+        .new-submission-btn {
+            background-color: #e74c3c;
+            color: white;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MindMate AI - Test Version</h1>
+        
+        <form id="symptom-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" placeholder="Your age" required min="1">
+            </div>
+            <div class="form-group">
+                <label for="symptoms">Describe how you're feeling</label>
+                <textarea id="symptoms" name="symptoms" rows="4" placeholder="Describe your symptoms..." required></textarea>
+            </div>
+            <button type="submit" id="submit-btn">Get Recommendation</button>
+        </form>
+
+        <div id="response-container">
+            <h2>Recommendation</h2>
+            <p id="response-message"></p>
+        </div>
+
+        <div id="error-container">
+            <p id="error-message"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const symptomForm = document.getElementById('symptom-form');
+            const submitButton = document.getElementById('submit-btn');
+            const responseContainer = document.getElementById('response-container');
+            const responseMessage = document.getElementById('response-message');
+            const errorContainer = document.getElementById('error-container');
+            const errorMessage = document.getElementById('error-message');
+            
+            const BACKEND_URL = 'http://127.0.0.1:5000';
+
+            const showSuccessMessage = (message) => {
+                console.log('Showing success message:', message);
+                
+                // Hide error messages
+                errorContainer.style.display = 'none';
+                
+                // Show the response
+                responseMessage.textContent = message;
+                responseContainer.style.display = 'block';
+                
+                console.log('Response container is now visible');
+            };
+
+            const showErrorMessage = (message) => {
+                console.log('Showing error message:', message);
+                
+                // Hide response messages
+                responseContainer.style.display = 'none';
+                
+                errorMessage.textContent = message;
+                errorContainer.style.display = 'block';
+            };
+
+            const addNewSubmissionButton = () => {
+                if (document.getElementById('new-submission-btn')) {
+                    return;
+                }
+
+                const newSubmissionBtn = document.createElement('button');
+                newSubmissionBtn.id = 'new-submission-btn';
+                newSubmissionBtn.textContent = 'New Submission';
+                newSubmissionBtn.className = 'new-submission-btn';
+                newSubmissionBtn.onclick = () => {
+                    symptomForm.reset();
+                    symptomForm.style.display = 'block';
+                    responseContainer.style.display = 'none';
+                    errorContainer.style.display = 'none';
+                    newSubmissionBtn.remove();
+                    console.log('Starting new submission...');
+                };
+
+                responseContainer.parentNode.insertBefore(newSubmissionBtn, responseContainer.nextSibling);
+                console.log('New submission button added');
+            };
+
+            const handleFormSubmit = async (event) => {
+                event.preventDefault();
+                
+                // Hide any existing messages
+                responseContainer.style.display = 'none';
+                errorContainer.style.display = 'none';
+
+                const formData = new FormData(symptomForm);
+                const name = formData.get('name');
+                const age = formData.get('age');
+                const symptoms = formData.get('symptoms');
+
+                submitButton.disabled = true;
+                submitButton.textContent = 'Analyzing...';
+
+                try {
+                    const response = await fetch(`${BACKEND_URL}/analyze`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name, age, symptoms }),
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => null);
+                        const detail = errorData ? errorData.error : `HTTP error! Status: ${response.status}`;
+                        throw new Error(detail);
+                    }
+
+                    const result = await response.json();
+                    console.log('API Response:', result);
+                    
+                    if (result.status === 'success') {
+                        console.log('Success response received, showing message...');
+                        showSuccessMessage(result.message);
+                        
+                        // Hide the form after successful submission
+                        symptomForm.style.display = 'none';
+                        console.log('Form hidden');
+                        
+                        // Add a "New Submission" button
+                        addNewSubmissionButton();
+                        
+                    } else {
+                        console.log('Error response:', result.message);
+                        showErrorMessage(result.message || 'An unknown application error occurred.');
+                    }
+
+                } catch (error) {
+                    console.error('Fetch Error:', error);
+                    showErrorMessage(`Could not connect to the backend. Details: ${error.message}`);
+                } finally {
+                    console.log('Resetting button state...');
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Get Recommendation';
+                    console.log('Button state reset complete');
+                }
+            };
+
+            symptomForm.addEventListener('submit', handleFormSubmit);
+        });
+    </script>
+</body>
+</html>

@@ -31,12 +31,22 @@
                     <label for="symptoms">Describe how you're feeling</label>
                     <textarea id="symptoms" name="symptoms" rows="6" placeholder="e.g., I've been feeling anxious and having trouble sleeping..." required></textarea>
                 </div>
-                <button type="submit" id="submit-btn">Get Recommendation</button>
+                <button type="submit" id="submit-btn" class="submit-button">
+                    <span class="button-text">Get Recommendation</span>
+                    <span class="loader hidden"></span>
+                </button>
             </form>
 
-            <div id="response-container" class="hidden">
-                <h2>Recommendation</h2>
-                <p id="response-message"></p>
+            <div id="result-view" class="hidden">
+                <div id="response-container">
+                    <div class="response-header">
+                        <h2>Recommendation</h2>
+                        <!-- This is where the severity will be displayed -->
+                        <div id="severity-indicator"></div>
+                    </div>
+                    <p id="response-message"></p>
+                </div>
+                <button type="button" id="new-submission-btn" class="submit-button">New Submission</button>
             </div>
 
             <div id="error-container" class="hidden">
@@ -44,23 +54,12 @@
             </div>
         </main>
 
-        <!-- Bonus: Watson Assistant Placeholder -->
-        <aside id="watson-placeholder">
-            <div class="watson-icon">
-                <!-- A simple chat bubble icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            </div>
-            <div class="watson-text">
-                <h3>Talk to an Assistant</h3>
-                <p>Coming soon: Chat with our AI assistant powered by IBM Watson for real-time support.</p>
-            </div>
-        </aside>
-
         <footer>
             <p>Disclaimer: MindMate AI is not a substitute for professional medical advice.</p>
         </footer>
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>

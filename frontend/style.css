@@ -9,6 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    transition: background-color 0.5s ease;
 }
 
 /* Main Container */
@@ -20,6 +21,9 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     padding: 2.5rem;
     box-sizing: border-box;
+    /* NEW: Add transition for a smooth appearance */
+    transition: all 0.4s ease-in-out;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Header */
@@ -78,7 +82,7 @@ textarea {
 }
 
 /* Button Styling */
-button {
+.submit-button {
     width: 100%;
     padding: 1rem;
     background: linear-gradient(90deg, #3498db, #2980b9);
@@ -88,21 +92,56 @@ button {
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem; /* Space between text and loader */
 }
 
-button:hover {
+.submit-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
 }
 
-button:active {
-    transform: translateY(0);
+.submit-button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+#new-submission-btn {
+    margin-top: 1.5rem;
+    background: #2ecc71;
+}
+
+#new-submission-btn:hover {
+     background: #27ae60;
+     box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+}
+
+/* Loader animation for the button */
+.loader {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Response and Error Containers */
-.hidden {
-    display: none;
+#result-view {
+    width: 100%;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 #response-container, #error-container {
@@ -110,6 +149,8 @@ button:active {
     padding: 1.5rem;
     border-radius: 8px;
     text-align: left;
+    max-height: 250px;
+    overflow-y: auto;
 }
 
 #response-container {
@@ -129,35 +170,27 @@ button:active {
     font-weight: 500;
 }
 
-/* Watson Placeholder */
-#watson-placeholder {
-    margin-top: 2.5rem;
-    padding: 1.5rem;
-    background-color: #e9ecef;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.watson-icon svg {
-    stroke: #495057;
-}
-
-.watson-text h3 {
-    margin: 0 0 0.25rem 0;
-    color: #343a40;
-}
-
-.watson-text p {
-    margin: 0;
-    color: #6c757d;
-}
-
 /* Footer */
 footer {
     text-align: center;
     margin-top: 2rem;
     font-size: 0.9rem;
     color: #95a5a6;
+}
+
+/* Utility Class to hide elements. */
+.hidden {
+    display: none;
+}
+
+/* NEW: Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
