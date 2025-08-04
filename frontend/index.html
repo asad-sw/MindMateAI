@@ -38,12 +38,11 @@
             </form>
 
             <div id="result-view" class="hidden">
+                <!-- The class of this container will be changed by JS -->
                 <div id="response-container">
-                    <div class="response-header">
-                        <h2>Recommendation</h2>
-                        <!-- This is where the severity will be displayed -->
-                        <div id="severity-indicator"></div>
-                    </div>
+                    <h2>Recommendation</h2>
+                    <!-- A dedicated element for the severity text -->
+                    <p id="severity-text" class="severity-text"></p>
                     <p id="response-message"></p>
                 </div>
                 <button type="button" id="new-submission-btn" class="submit-button">New Submission</button>

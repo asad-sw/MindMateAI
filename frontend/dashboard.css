@@ -1,0 +1,152 @@
+/* General Body Styling */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 2rem;
+}
+
+/* Main Container */
+.dashboard-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    box-sizing: border-box;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1.5rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin-top: 0.5rem;
+}
+
+/* Controls */
+.controls {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.filter-group label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.filter-group select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #bdc3c7;
+    font-size: 1rem;
+}
+
+/* Table Styling */
+.table-container {
+    overflow-x: auto; /* For responsiveness on small screens */
+}
+
+#logs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#logs-table th, #logs-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    white-space: nowrap;
+}
+
+#logs-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #34495e;
+}
+
+#logs-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Severity Badge Styling */
+.severity-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+    min-width: 70px;
+}
+
+.severity-low { background-color: #2ecc71; } /* Green */
+.severity-medium { background-color: #f39c12; } /* Orange */
+.severity-high { background-color: #e74c3c; } /* Red */
+.severity-not-determined { background-color: #95a5a6; } /* Gray */
+
+/* Pagination Controls */
+.pagination-controls {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pagination-controls button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #bdc3c7;
+    background-color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background-color: #3498db;
+    color: #fff;
+    border-color: #3498db;
+}
+
+.pagination-controls button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Utility Styles */
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: #7f8c8d;
+}
+.no-data.error {
+    color: #e74c3c;
+    font-weight: 500;
+}
+
+#loading-indicator {
+    text-align: center;
+    padding: 2rem;
+    font-weight: 500;
+    color: #3498db;
+}

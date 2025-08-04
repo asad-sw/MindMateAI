@@ -9,7 +9,6 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    transition: background-color 0.5s ease;
 }
 
 /* Main Container */
@@ -21,8 +20,6 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     padding: 2.5rem;
     box-sizing: border-box;
-    /* NEW: Add transition for a smooth appearance */
-    transition: all 0.4s ease-in-out;
     animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -96,7 +93,7 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.75rem; /* Space between text and loader */
+    gap: 0.75rem;
 }
 
 .submit-button:hover {
@@ -121,15 +118,13 @@ textarea {
      box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
 }
 
-/* Loader animation for the button */
+/* Loader animation */
 .loader {
     width: 18px;
     height: 18px;
     border: 2px solid #FFF;
     border-bottom-color: transparent;
     border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
     animation: rotation 1s linear infinite;
 }
 
@@ -144,26 +139,57 @@ textarea {
     animation: fadeIn 0.5s ease-in-out;
 }
 
-#response-container, #error-container {
+#response-container {
     margin-top: 2rem;
     padding: 1.5rem;
     border-radius: 8px;
     text-align: left;
-    max-height: 250px;
-    overflow-y: auto;
-}
-
-#response-container {
-    background-color: #e8f6f3;
-    border-left: 5px solid #1abc9c;
+    border-left: 5px solid;
+    transition: all 0.3s ease-in-out;
 }
 
 #response-container h2 {
-    margin-top: 0;
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+.severity-text {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+/* --- Dynamic Color-Coding for the entire response box --- */
+#response-container.severity-low {
+    background-color: #e8f6f3;
+    border-left-color: #1abc9c;
+}
+#response-container.severity-low h2, #response-container.severity-low .severity-text {
     color: #16a085;
 }
 
+#response-container.severity-medium {
+    background-color: #fef5e7;
+    border-left-color: #f39c12;
+}
+#response-container.severity-medium h2, #response-container.severity-medium .severity-text {
+    color: #d35400;
+}
+
+#response-container.severity-high {
+    background-color: #fbeee6;
+    border-left-color: #e74c3c;
+}
+#response-container.severity-high h2, #response-container.severity-high .severity-text {
+    color: #c0392b;
+}
+
+
 #error-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: left;
     background-color: #fbeee6;
     border-left: 5px solid #e74c3c;
     color: #c0392b;
@@ -178,19 +204,12 @@ footer {
     color: #95a5a6;
 }
 
-/* Utility Class to hide elements. */
+/* Utility Classes */
 .hidden {
     display: none;
 }
 
-/* NEW: Fade-in animation */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -1,91 +1,62 @@
-# Testing MindMate AI in External Browsers
+# MindMate AI - Testing & Demo Guide
 
-## Issue Fixed: CORS and Recommendation Visibility
+This guide provides instructions on how to run the MindMate AI application and test its core features.
 
-### What was the problem?
-1. **CORS Issues**: External browsers (Chrome, Edge) were blocked by CORS policy
-2. **Recommendation Disappearing**: The recommendation would flash and disappear immediately
+---
 
-### ✅ Solutions Applied:
+### 1. Running the Application
 
-#### 1. **Enhanced CORS Configuration**
-- Added explicit CORS headers in Flask backend
-- Added OPTIONS endpoint for preflight requests  
-- Configured specific origins, methods, and headers
+**Prerequisites:**
+- Python 3.x and Pip
+- A web browser and a code editor (like VS Code with the "Live Server" extension)
 
-#### 2. **Fixed Frontend JavaScript**
-- Replaced class-based hiding with direct style manipulation
-- Ensured recommendation container stays visible
-- Added cache-busting parameters to prevent cached script issues
+**Backend Setup:**
 
-#### 3. **Improved User Experience**
-- Form hides after successful submission
-- "New Submission" button appears for starting fresh
-- Recommendation stays visible until user is ready to continue
+1.  Open a terminal and navigate to the `/backend` directory.
+2.  Create and activate a Python virtual environment.
+3.  Install the required libraries:
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  Run the server:
+    ```bash
+    flask run
+    ```
+    > The backend will be running at `http://127.0.0.1:5000`.
 
-### 🧪 **How to Test:**
+**Frontend Setup:**
 
-1. **Make sure both servers are running:**
-   - Backend: `http://127.0.0.1:5000` (Flask app)
-   - Frontend: `http://localhost:8000` (HTTP server)
+1.  In your code editor, open the `/frontend` folder.
+2.  Right-click on `index.html` and open it with Live Server.
+3.  Right-click on `dashboard.html` and open it in a new tab with Live Server.
 
-2. **Open in external browser:**
-   - Go to: `http://localhost:8000`
-   - Clear browser cache (Ctrl+Shift+Delete) if needed
-   - Fill out the form and submit
+---
 
-3. **Expected behavior:**
-   - Form submits successfully
-   - Recommendation appears and stays visible
-   - Form hides, "New Submission" button appears
-   - Click "New Submission" to start over
+### 2. Demo Flow & Features to Test
 
-### 🔧 **Technical Changes Made:**
+This flow is designed to showcase the full power of MindMate AI for the hackathon judges.
 
-#### Backend (`app.py`):
-```python
-# Enhanced CORS configuration
-CORS(app, resources={
-    r"/analyze": {
-        "origins": "*",
-        "methods": ["POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"]
-    }
-})
+**Step 1: Test the "High" Severity Case**
 
-# Added OPTIONS endpoint
-@app.route('/analyze', methods=['OPTIONS'])
-def analyze_options():
-    response = jsonify({'status': 'ok'})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
-    return response
-```
+-   **Action:** On the main form (`index.html`), enter a name and age. For the symptoms, type something that indicates significant distress, like: **"I feel hopeless all the time, I can't sleep, and I have no energy to do anything."**
+-   **What to Look For:**
+    -   The AI should return a supportive and empathetic recommendation.
+    -   The recommendation box should turn **red**, and the severity should be clearly marked as **"High"**.
+    -   The submission should be saved to the `triage_log.csv` file in the `/backend` folder.
 
-#### Frontend (`script.js`):
-```javascript
-// Direct style manipulation instead of CSS classes
-const showSuccessMessage = (message) => {
-    errorContainer.style.display = 'none';
-    responseMessage.textContent = message;
-    responseContainer.style.display = 'block';
-};
-```
+**Step 2: Test the "Medium" Severity Case**
 
-#### CSS (`style.css`):
-```css
-/* Initially hidden containers */
-#response-container, #error-container {
-    display: none;
-    /* ... other styles ... */
-}
-```
+-   **Action:** Click "New Submission." For the symptoms, type something concerning but less critical, like: **"I've been feeling very anxious and stressed out from work lately."**
+-   **What to Look For:**
+    -   The recommendation box should turn **orange**, and the severity should be marked as **"Medium"**.
 
-### 📝 **Files Modified:**
-- `backend/app.py` - Enhanced CORS configuration
-- `frontend/script.js` - Fixed display logic
-- `frontend/style.css` - Updated display handling
-- `frontend/index.html` - Added cache-busting parameters
+**Step 3: View the Clinical Dashboard**
 
-The application should now work consistently across all browsers including Chrome and Edge!
+-   **Action:** Go to the `dashboard.html` tab you opened earlier and refresh the page.
+-   **What to Look For:**
+    -   You should see both of your new submissions at the top of the list.
+    -   The severity badges should be color-coded (red for your first entry, orange for the second).
+    -   **Test the filter:** Use the "Filter by Severity" dropdown and select "High." The list should update to show only the high-severity case. This demonstrates the core value proposition for clinic staff.
+    -   **Test Pagination:** If you have more than 10 entries, test the "Previous" and "Next" buttons.
+
+This testing flow demonstrates our complete, end-to-end solution and highlights our innovative use of agentic AI for real-world impact.

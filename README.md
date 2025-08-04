@@ -1,59 +1,94 @@
 # 🧠 MindMate AI  
-**An agentic AI-powered assistant for mental health triage and clinic support**  
-Built for the **IBM TechXchange 2025 Hackathon – Build with Agentic AI Challenge**
+*An Agentic AI-Powered Assistant for Mental Health Triage and Clinic Support*  
+**Built for the IBM TechXchange 2025 Hackathon – Build with Agentic AI Challenge**
 
 ---
 
-## 📌 Overview  
-MindMate AI is an intelligent assistant designed to support mental health triage in community clinics and under-resourced healthcare settings. It automates pre-visit intake, screens for psychological distress, and provides recommendations using IBM's watsonx™ platform. Our goal is to reduce staff burden, improve patient flow, and ensure timely intervention for those in need.
+## 📌 Overview
+
+**MindMate AI** is an intelligent assistant designed to support mental health triage in community clinics and under-resourced healthcare settings. It automates pre-visit intake, screens for psychological distress using IBM's **watsonx.ai** platform, and provides clinic staff with an actionable dashboard to prioritize patient care.
+
+Our mission is to reduce staff burden, improve patient flow, and ensure timely intervention for those in need.
 
 ---
 
-## 🎯 Problem Statement  
-Clinics in underserved areas face challenges like:  
-- Limited staff availability  
-- High patient load  
+## 🎯 The Problem
+
+Clinics in underserved areas face critical challenges:
+
+- Limited staff
+- High patient loads
 - Delayed recognition of urgent mental health cases
 
-MindMate AI helps address this by offering an agentic AI that:  
-- Collects patient input via natural conversation  
-- Screens for anxiety, depression, and other symptoms  
-- Routes urgent cases to clinicians  
-- Supports multiple languages  
-- Ensures privacy and data security
+This often leads to poor patient outcomes.
+
+**MindMate AI** acts as an "agentic" first line of defense that reasons about patient needs and delivers actionable intelligence—before a human ever sees the case.
 
 ---
 
-## 🔧 Features  
-- ✨ Agentic AI powered by **IBM watsonx.ai**  
-- 💬 Natural conversation interface using **watsonx Assistant**  
-- 🧠 Mental health triage logic with dynamic routing  
-- 🌐 Multi-language and mobile-ready design  
-- 📊 (Optional) Admin dashboard for clinic staff  
-- 🔒 Privacy-first, secure data handling
+## ✨ Key Features
+
+- **🧠 Agentic AI Triage**  
+  Powered by IBM watsonx.ai, MindMate analyzes symptoms to generate:
+  - An empathetic recommendation
+  - An AI-classified severity score: `Low`, `Medium`, or `High`
+
+- **📊 Clinical Dashboard**  
+  A secure, user-friendly dashboard for clinic staff:
+  - Displays all submissions
+  - Filter and sort by severity
+  - Identify high-risk cases instantly
+
+- **🔒 Robust & Secure**  
+  - Rate limiting to prevent abuse  
+  - Input validation  
+  - Clean error handling and logging
+
+- **📁 Data Logging**  
+  - Every triage result is saved in a CSV file  
+  - Enables auditing, follow-up, and dashboard integration
 
 ---
 
-## 🛠 Tech Stack  
-- **IBM watsonx.ai** – Agentic AI logic  
-- **IBM watsonx Assistant** – NLP-powered chatbot  
-- **Python (Flask)** – Backend  
-- **React.js / HTML / CSS** – Frontend  
-- **GitHub** – Version control and collaboration  
-- *(Optional)* **watsonx.data** or **Firebase** – Secure triage record storage
+## 🛠 Tech Stack
+
+| Tech | Purpose |
+|------|---------|
+| **IBM watsonx.ai** | Agentic AI logic for real-time triage & reasoning |
+| **Python (Flask)** | Backend API & token authentication |
+| **HTML, CSS, JavaScript** | Frontend UI & dashboard interface |
+| **GitHub** | Version control & collaboration |
 
 ---
 
-## 👥 The Team — NextGen Thinkers  
+## 👥 Team
+
+This project was developed by **Team: NextGen Thinkers** for the IBM TechXchange 2025 Hackathon:
+
 - **Ibrahim Fofanah** – Team Lead  
 - **Sourabh Pandya** – General Member  
 - **Mati Ullah** – General Member  
 
 ---
 
-## 🚀 Getting Started
+## 🚀 How to Run
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/Denis060/MindMate-AI.git
-cd MindMate-AI
+Please refer to [TESTING_GUIDE.md](TESTING_GUIDE.md) for full setup instructions.
+
+1. Clone the repo  
+2. Set your IBM watsonx.ai API credentials  
+3. Run the backend (`Flask`)  
+4. Open the `frontend/index.html` in a browser  
+5. Submit symptoms → See live triage → Check the clinical dashboard
+
+---
+
+## 🔐 Disclaimer
+
+> MindMate AI is not a substitute for professional mental health care. It is a triage and support tool, not a diagnostic system.
+
+---
+
+## 🌍 License
+
+MIT License – see [LICENSE](LICENSE) for details.

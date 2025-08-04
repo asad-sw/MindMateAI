@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMate AI - Clinical Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <header>
+            <h1>Clinical Dashboard</h1>
+            <p>Triage submissions from MindMate AI</p>
+        </header>
+
+        <main>
+            <div class="controls">
+                <div class="filter-group">
+                    <label for="severity-filter">Filter by Severity:</label>
+                    <select id="severity-filter">
+                        <option value="all">All</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="logs-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Severity</th>
+                            <th>Symptoms</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-table-body">
+                        <!-- Data will be injected here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+             <div id="loading-indicator">Loading submissions...</div>
+
+            <!-- NEW: Pagination Controls -->
+            <div class="pagination-controls">
+                <button id="prev-btn" disabled>Previous</button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-btn" disabled>Next</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

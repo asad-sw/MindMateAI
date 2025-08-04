@@ -6,8 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttonLoader = submitButton.querySelector('.loader');
 
     const resultView = document.getElementById('result-view');
-    const responseMessage = resultView.querySelector('#response-message');
-    const severityIndicator = document.getElementById('severity-indicator');
+    const responseContainer = document.getElementById('response-container');
+    const severityText = document.getElementById('severity-text');
+    const responseMessage = document.getElementById('response-message');
     
     const errorContainer = document.getElementById('error-container');
     const errorMessage = document.getElementById('error-message');
@@ -53,14 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             if (result.status === 'success') {
-                // Handle both message and severity from the API response
+                // 1. Set the text for the recommendation and severity
                 responseMessage.textContent = result.message;
-                severityIndicator.textContent = `Severity: ${result.severity}`;
-                
-                // Reset classes and add the new one for color-coding
-                severityIndicator.className = 'severity-indicator'; 
-                severityIndicator.classList.add(`severity-${result.severity.toLowerCase().replace(' ', '-')}`);
+                severityText.textContent = `Severity: ${result.severity}`;
 
+                // 2. Reset the container's classes to remove old colors
+                responseContainer.className = ''; 
+                
+                // 3. Add the new severity class to the WHOLE container for color-coding
+                const severityClass = `severity-${result.severity.toLowerCase().replace(' ', '-')}`;
+                responseContainer.classList.add(severityClass);
+
+                // Show the results
                 resultView.classList.remove('hidden');
                 symptomForm.classList.add('hidden');
             } else {
