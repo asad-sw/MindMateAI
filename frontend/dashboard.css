@@ -44,12 +44,20 @@ header p {
 .controls {
     margin-bottom: 1.5rem;
     display: flex;
-    justify-content: flex-end;
+    gap: 1.5rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .filter-group label {
     font-weight: 600;
-    margin-right: 0.5rem;
+    white-space: nowrap;
 }
 
 .filter-group select {
@@ -57,6 +65,7 @@ header p {
     border-radius: 8px;
     border: 1px solid #bdc3c7;
     font-size: 1rem;
+    min-width: 150px;
 }
 
 /* Table Styling */
@@ -74,7 +83,37 @@ header p {
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
+}
+
+/* Column-specific styling */
+#logs-table th:nth-child(1), #logs-table td:nth-child(1) { /* Timestamp */
     white-space: nowrap;
+    min-width: 120px;
+}
+
+#logs-table th:nth-child(2), #logs-table td:nth-child(2) { /* Name */
+    min-width: 100px;
+}
+
+#logs-table th:nth-child(3), #logs-table td:nth-child(3) { /* Age */
+    text-align: center;
+    width: 60px;
+}
+
+#logs-table th:nth-child(4), #logs-table td:nth-child(4) { /* Language */
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+#logs-table th:nth-child(5), #logs-table td:nth-child(5) { /* Severity */
+    text-align: center;
+    min-width: 100px;
+}
+
+#logs-table th:nth-child(6), #logs-table td:nth-child(6) { /* Symptoms */
+    max-width: 300px;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 #logs-table th {

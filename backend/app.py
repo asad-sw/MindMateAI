@@ -20,10 +20,8 @@ TOKEN_ENDPOINT = "https://iam.cloud.ibm.com/identity/token"
 API_ENDPOINT = "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2024-05-29"
 MODEL_ID = "ibm/granite-3-8b-instruct"
 
-# --- Global variable to hold the access token ---
+# --- Globals ---
 iam_access_token = None
-
-# --- Simple in-memory store for rate limiting ---
 request_timestamps = {}
 RATE_LIMIT_SECONDS = 5
 MAX_SYMPTOMS_LENGTH = 2000
@@ -37,7 +35,7 @@ CORS(app)
 # --- Configuration for CSV Logging ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOG_FILE = os.path.join(BASE_DIR, 'triage_log.csv')
-LOG_HEADER = ['timestamp', 'name', 'age', 'symptoms', 'recommendation', 'severity']
+LOG_HEADER = ['timestamp', 'name', 'age', 'language', 'symptoms', 'recommendation', 'severity']
 
 # --------------------------------------------------------------------------
 # --- IBM WATSONX.AI AUTHENTICATION & API CALL ---
@@ -56,36 +54,35 @@ def get_iam_token():
         print(f"Error getting IAM token: {e}")
         return None
 
-def get_watsonx_recommendation(symptoms):
+def get_watsonx_recommendation(symptoms, language="English"):
+    """
+    Calls watsonx.ai with the final, high-performance prompt.
+    """
     token = get_iam_token()
     if not token:
         return {"error": "Failed to authenticate with IBM Cloud."}
 
-    # --- NEW: Final, High-Performance Prompt ---
+    # --- ENHANCED PROMPT FOR BETTER LANGUAGE COMPLIANCE ---
+    language_examples = {
+        "French": "Je comprends que vous traversez une période difficile. Il peut être utile de parler à un professionnel de la santé mentale.",
+        "Spanish": "Entiendo que estás pasando por un momento difícil. Puede ser útil hablar con un profesional de salud mental.",
+        "German": "Ich verstehe, dass Sie eine schwierige Zeit durchmachen. Es könnte hilfreich sein, mit einem Fachmann für psychische Gesundheit zu sprechen.",
+        "English": "I understand you're going through a difficult time. It might be helpful to speak with a mental health professional."
+    }
+    
+    example_response = language_examples.get(language, language_examples["English"])
+    
     prompt = f"""
-**Persona:** You are MindMate, an AI assistant with a warm, caring, and supportive tone. You are designed for mental health triage. Your primary goal is to make the user feel heard and validated, and to offer a gentle, non-medical suggestion.
+**LANGUAGE REQUIREMENT:** You MUST respond ONLY in {language}. No exceptions.
 
-**Strict Instructions:**
-1.  **NEVER** say you are "unable to provide help" or "not a medical professional." The user knows this.
-2.  **DO NOT** diagnose.
-3.  Your recommendation **MUST** be a supportive statement and a general well-being suggestion (e.g., journaling, talking to a friend, practicing mindfulness, going for a walk).
-4.  You **MUST** return only a single, valid JSON object. Do not include any other text or explanations.
+**Example of correct {language} response format:**
+{{"recommendation": "{example_response}", "severity": "Medium"}}
 
-**Task:** Analyze the user's symptoms and return a JSON object with two keys: "recommendation" and "severity".
-- "recommendation": A 2-3 sentence supportive message.
-- "severity": "Low", "Medium", or "High".
+**Your task:** Analyze the user's mental health symptoms and respond with empathy in {language}.
 
-**Example of a good response:**
-User Symptoms: "I feel sad all the time and have no energy."
-JSON:
-{{
-  "recommendation": "It sounds incredibly difficult to be carrying such a heavy feeling. Focusing on one small, gentle activity each day, like a short walk, can sometimes help. It's brave of you to share this, and speaking with a therapist could provide you with dedicated support.",
-  "severity": "High"
-}}
+**User's input:** "{symptoms}"
 
-**User Input to Analyze:**
-User Symptoms: "{symptoms}"
-JSON:
+**Required JSON response in {language}:**
 """
 
     headers = {
@@ -99,7 +96,7 @@ JSON:
         "input": prompt,
         "parameters": {
             "decoding_method": "greedy",
-            "max_new_tokens": 300,
+            "max_new_tokens": 350,
             "min_new_tokens": 50
         },
         "project_id": PROJECT_ID
@@ -115,12 +112,10 @@ JSON:
             ai_response = json.loads(match.group())
             return ai_response
         else:
-            print(f"No valid JSON found in response: {generated_text}")
             return {"error": "Received a malformed response from the AI."}
 
     except requests.exceptions.RequestException as e:
         print(f"API call failed: {e}")
-        print(f"Response content: {response.content}")
         return {"error": "The AI service is currently unavailable."}
     except (json.JSONDecodeError, KeyError, IndexError) as e:
         print(f"Failed to parse response. Raw text: '{generated_text}'. Error: {e}")
@@ -130,7 +125,7 @@ JSON:
 # Logging and API Routes
 # --------------------------------------------------------------------------
 
-def log_submission(name, age, symptoms, recommendation, severity):
+def log_submission(name, age, language, symptoms, recommendation, severity):
     file_exists = os.path.isfile(LOG_FILE)
     try:
         with open(LOG_FILE, mode='a', newline='', encoding='utf-8') as f:
@@ -138,7 +133,7 @@ def log_submission(name, age, symptoms, recommendation, severity):
             if not file_exists or os.path.getsize(LOG_FILE) == 0:
                 writer.writerow(LOG_HEADER)
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            writer.writerow([timestamp, name, age, symptoms, recommendation, severity])
+            writer.writerow([timestamp, name, age, language, symptoms, recommendation, severity])
     except IOError as e:
         print(f"Error writing to log file: {e}")
 
@@ -164,16 +159,21 @@ def analyze_symptoms():
     name = data.get('name')
     age = data.get('age')
     symptoms = data.get('symptoms')
+    language = data.get('language', 'English')
 
     if not all([name, age, symptoms]):
-        return jsonify({"error": "Missing fields: name, age, and symptoms are required."}), 400
+        return jsonify({"error": "Missing fields."}), 400
 
     if len(symptoms) > MAX_SYMPTOMS_LENGTH:
-        return jsonify({"error": f"Symptoms input is too long. Max characters: {MAX_SYMPTOMS_LENGTH}"}), 413
+        return jsonify({"error": f"Symptoms input too long."}), 413
 
     try:
         age_int = int(age)
-        ai_response = get_watsonx_recommendation(symptoms)
+        print(f"Processing request in language: {language}") # Debug log
+        print(f"Symptoms: {symptoms[:50]}...") # Debug log
+        
+        ai_response = get_watsonx_recommendation(symptoms, language)
+        print(f"AI Response: {ai_response}") # Debug log
 
         if "error" in ai_response:
             return jsonify({"error": ai_response["error"]}), 500
@@ -181,9 +181,24 @@ def analyze_symptoms():
         recommendation_text = ai_response.get("recommendation", "No recommendation provided.")
         severity_level = ai_response.get("severity", "Not Determined")
         
-        full_recommendation = f"Thank you, {name}. {recommendation_text}"
+        # Multilingual greetings
+        greetings = {
+            "English": f"Thank you, {name}.",
+            "Spanish": f"Gracias, {name}.",
+            "French": f"Merci, {name}.",
+            "German": f"Danke, {name}.",
+            "Portuguese": f"Obrigado, {name}.",
+            "Italian": f"Grazie, {name}.",
+            "Chinese": f"谢谢你，{name}。",
+            "Japanese": f"ありがとう、{name}さん。",
+            "Arabic": f"شكراً لك، {name}.",
+            "Hindi": f"धन्यवाद, {name}।"
+        }
         
-        log_submission(name, age_int, symptoms, full_recommendation, severity_level)
+        greeting = greetings.get(language, f"Thank you, {name}.")
+        full_recommendation = f"{greeting} {recommendation_text}"
+        
+        log_submission(name, age_int, language, symptoms, full_recommendation, severity_level)
 
         response = {
             "status": "success",
@@ -218,8 +233,5 @@ def get_logs():
         print(f"Error reading or processing log file: {e}")
         return jsonify({"error": "Could not process log file."}), 500
 
-# --------------------------------------------------------------------------
-# Main Execution Block
-# --------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

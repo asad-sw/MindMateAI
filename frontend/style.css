@@ -53,6 +53,11 @@ header p {
     color: #34495e;
 }
 
+/* Container for textarea and mic button */
+.textarea-container {
+    position: relative;
+}
+
 input[type="text"],
 input[type="number"],
 textarea {
@@ -66,16 +71,18 @@ textarea {
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+textarea {
+    resize: vertical;
+    /* Make space for the mic button */
+    padding-right: 40px;
+}
+
 input[type="text"]:focus,
 input[type="number"]:focus,
 textarea:focus {
     outline: none;
     border-color: #3498db;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-}
-
-textarea {
-    resize: vertical;
 }
 
 /* Button Styling */
@@ -118,6 +125,32 @@ textarea {
      box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
 }
 
+/* Icon Button Styling (Mic and Speaker) */
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: #7f8c8d;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.icon-btn:hover {
+    color: #3498db;
+    transform: scale(1.1);
+}
+
+#mic-btn {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+#mic-btn.is-listening {
+    color: #e74c3c;
+    animation: pulse 1.5s infinite;
+}
+
 /* Loader animation */
 .loader {
     width: 18px;
@@ -126,11 +159,6 @@ textarea {
     border-bottom-color: transparent;
     border-radius: 50%;
     animation: rotation 1s linear infinite;
-}
-
-@keyframes rotation {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 /* Response and Error Containers */
@@ -148,6 +176,12 @@ textarea {
     transition: all 0.3s ease-in-out;
 }
 
+.response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #response-container h2 {
     margin: 0;
     margin-bottom: 1rem;
@@ -159,7 +193,7 @@ textarea {
     margin-bottom: 1rem;
 }
 
-/* --- Dynamic Color-Coding for the entire response box --- */
+/* Dynamic Color-Coding */
 #response-container.severity-low {
     background-color: #e8f6f3;
     border-left-color: #1abc9c;
@@ -183,7 +217,6 @@ textarea {
 #response-container.severity-high h2, #response-container.severity-high .severity-text {
     color: #c0392b;
 }
-
 
 #error-container {
     margin-top: 2rem;
@@ -209,7 +242,19 @@ footer {
     display: none;
 }
 
+/* Keyframe Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }

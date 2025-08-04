@@ -20,6 +20,22 @@
         <main>
             <div class="controls">
                 <div class="filter-group">
+                    <label for="language-filter">Filter by Language:</label>
+                    <select id="language-filter">
+                        <option value="all">All Languages</option>
+                        <option value="English">🇺🇸 English</option>
+                        <option value="Spanish">🇪🇸 Español</option>
+                        <option value="French">🇫🇷 Français</option>
+                        <option value="German">🇩🇪 Deutsch</option>
+                        <option value="Portuguese">🇵🇹 Português</option>
+                        <option value="Italian">🇮🇹 Italiano</option>
+                        <option value="Chinese">🇨🇳 中文</option>
+                        <option value="Japanese">🇯🇵 日本語</option>
+                        <option value="Arabic">🇸🇦 العربية</option>
+                        <option value="Hindi">🇮🇳 हिन्दी</option>
+                    </select>
+                </div>
+                <div class="filter-group">
                     <label for="severity-filter">Filter by Severity:</label>
                     <select id="severity-filter">
                         <option value="all">All</option>
@@ -37,6 +53,7 @@
                             <th>Timestamp</th>
                             <th>Name</th>
                             <th>Age</th>
+                            <th>Language</th>
                             <th>Severity</th>
                             <th>Symptoms</th>
                         </tr>
