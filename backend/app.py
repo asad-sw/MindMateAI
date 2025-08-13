@@ -1,3 +1,33 @@
+
+import os
+import re
+import csv
+import requests
+import json
+import time
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.getenv("WATSONX_API_KEY")
+PROJECT_ID = os.getenv("WATSONX_PROJECT_ID")
+API_ENDPOINT = os.getenv("WATSONX_URL") or "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2024-05-29"
+TOKEN_ENDPOINT = "https://iam.cloud.ibm.com/identity/token"
+MODEL_ID = "ibm/granite-3-8b-instruct"
+
+# Debug prints for environment variables (after assignment)
+print("[DEBUG] API_KEY:", API_KEY)
+print("[DEBUG] PROJECT_ID:", PROJECT_ID)
+print("[DEBUG] API_ENDPOINT:", API_ENDPOINT)
+
+# Debug prints for environment variables (after assignment)
+print("[DEBUG] API_KEY:", API_KEY)
+print("[DEBUG] PROJECT_ID:", PROJECT_ID)
+print("[DEBUG] API_ENDPOINT:", API_ENDPOINT)
+
 import re
 import csv
 import os
@@ -7,18 +37,23 @@ import time
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # --------------------------------------------------------------------------
-# --- IBM WATSONX.AI CREDENTIALS ---
+# --- IBM WATSONX.AI CREDENTIALS (Loaded from .env) ---
 # --------------------------------------------------------------------------
-API_KEY = "Cn5Ft1EIYG9dN8uCYGy67Vn-htSwcvLRJCBLCLI15YEI"
-PROJECT_ID = "78032f12-5c28-4fa3-ba9b-175b08e06966"
-# --------------------------------------------------------------------------
-
-# --- Watsonx.ai API Configuration ---
+API_KEY = os.getenv("WATSONX_API_KEY")
+PROJECT_ID = os.getenv("WATSONX_PROJECT_ID")
+API_ENDPOINT = os.getenv("WATSONX_URL") or "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2024-05-29"
 TOKEN_ENDPOINT = "https://iam.cloud.ibm.com/identity/token"
-API_ENDPOINT = "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2024-05-29"
 MODEL_ID = "ibm/granite-3-8b-instruct"
+
+# Debug prints for environment variables
+print("[DEBUG] API_KEY:", API_KEY)
+print("[DEBUG] PROJECT_ID:", PROJECT_ID)
+print("[DEBUG] API_ENDPOINT:", API_ENDPOINT)
 
 # --- Globals ---
 iam_access_token = None
