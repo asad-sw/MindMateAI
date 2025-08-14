@@ -302,6 +302,63 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Copy, Download, and Print Buttons Logic ---
+    const copyButton = document.getElementById('copy-btn');
+    const downloadButton = document.getElementById('download-btn');
+    const printButton = document.getElementById('print-btn');
+
+    // Helper to get the recommendation text (severity + message)
+    function getRecommendationText() {
+        return `${severityText.textContent}\n${responseMessage.textContent}`;
+    }
+
+    // Copy to Clipboard
+    if (copyButton) {
+        copyButton.addEventListener('click', () => {
+            const text = getRecommendationText();
+            navigator.clipboard.writeText(text).then(() => {
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy to Clipboard';
+                }, 1500);
+            }).catch(() => {
+                copyButton.textContent = 'Error copying';
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy to Clipboard';
+                }, 1500);
+            });
+        });
+    }
+
+    // Download Recommendation
+    if (downloadButton) {
+        downloadButton.addEventListener('click', () => {
+            const text = getRecommendationText();
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'MindMateAI_Recommendation.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    }
+
+    // Print Recommendation
+    if (printButton) {
+        printButton.addEventListener('click', () => {
+            const text = getRecommendationText();
+            const printWindow = window.open('', '', 'width=600,height=400');
+            printWindow.document.write(`<pre style="font-size:1.2em">${text.replace(/\n/g, '<br>')}</pre>`);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        });
+    }
+
     symptomForm.addEventListener('submit', handleFormSubmit);
     newSubmissionButton.addEventListener('click', handleNewSubmission);
     

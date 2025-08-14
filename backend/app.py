@@ -97,27 +97,24 @@ def get_watsonx_recommendation(symptoms, language="English"):
     if not token:
         return {"error": "Failed to authenticate with IBM Cloud."}
 
-    # --- ENHANCED PROMPT FOR BETTER LANGUAGE COMPLIANCE ---
-    language_examples = {
-        "French": "Je comprends que vous traversez une période difficile. Il peut être utile de parler à un professionnel de la santé mentale.",
-        "Spanish": "Entiendo que estás pasando por un momento difícil. Puede ser útil hablar con un profesional de salud mental.",
-        "German": "Ich verstehe, dass Sie eine schwierige Zeit durchmachen. Es könnte hilfreich sein, mit einem Fachmann für psychische Gesundheit zu sprechen.",
-        "English": "I understand you're going through a difficult time. It might be helpful to speak with a mental health professional."
-    }
-    
-    example_response = language_examples.get(language, language_examples["English"])
-    
+    # --- AGENTIC AI PROMPT WITH MULTI-SEVERITY EXAMPLES ---
     prompt = f"""
-**LANGUAGE REQUIREMENT:** You MUST respond ONLY in {language}. No exceptions.
+You are a mental health triage assistant. For each set of symptoms, respond with:
+- An empathetic, actionable recommendation in {language}.
+- A severity assessment: Low, Medium, or High.
 
-**Example of correct {language} response format:**
-{{"recommendation": "{example_response}", "severity": "Medium"}}
+Examples:
+Symptoms: "I'm a bit stressed at work."
+Response: {{"recommendation": "It's normal to feel stressed sometimes. Try some relaxation techniques like deep breathing or a short walk. If stress continues, consider talking to someone you trust.", "severity": "Low"}}
 
-**Your task:** Analyze the user's mental health symptoms and respond with empathy in {language}.
+Symptoms: "I can't sleep and feel anxious every day."
+Response: {{"recommendation": "It sounds like you're struggling. Consider reaching out to a counselor or mental health professional. Try to maintain a regular sleep schedule and practice relaxation techniques.", "severity": "Medium"}}
 
-**User's input:** "{symptoms}"
+Symptoms: "I want to end my life."
+Response: {{"recommendation": "I'm really sorry you're feeling this way. Please talk to a mental health professional or someone you trust immediately. You are not alone, and help is available.", "severity": "High"}}
 
-**Required JSON response in {language}:**
+Now, analyze the following symptoms and respond in the same format, in {language}:
+Symptoms: "{symptoms}"
 """
 
     headers = {
