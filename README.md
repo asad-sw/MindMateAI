@@ -4,6 +4,10 @@
 
 ---
 
+## 🎥 Demo
+
+Watch a short demo of the project here:  https://drive.google.com/file/d/1zxrjWGEpdH45K-WtOkSdNZgvllow7c1S/view?usp=drive_link
+
 ## 📌 Overview
 
 **MindMate AI** is an intelligent assistant designed to support mental health triage in community clinics and under-resourced healthcare settings. It automates pre-visit intake, screens for psychological distress using IBM's **watsonx.ai** platform, and provides clinic staff with an actionable dashboard to prioritize patient care.
@@ -65,11 +69,7 @@ This often leads to poor patient outcomes.
 
 This project was developed by **Team: NextGen Thinkers** for the IBM TechXchange 2025 Hackathon:
 
-<<<<<<< HEAD
 - **Ibrahim Fofanah** – Lead Data Scientist  
-=======
-- **Ibrahim Fofanah** – Lead Data SCientist  
->>>>>>> 71b29d73c65d703cd68d1678da2edf2dc76d2ac3
 - **Sourabh Pandya** – Solution Architect  
 - **Asad Waghdhare** – Data Scientist  
 
@@ -82,8 +82,8 @@ This project was developed by **Team: NextGen Thinkers** for the IBM TechXchange
 Please refer to [TESTING_GUIDE.md](TESTING_GUIDE.md) for full setup instructions.
 
 1. Clone the repo  
-2. Set your IBM watsonx.ai API credentials  
-3. Run the backend (`Flask`)  
+2. Set your IBM watsonx.ai API credentials in new .env file in the backend
+3. Run the backend (`Flask`)  app.py file
 4. Open the `frontend/index.html` in a browser  
 5. Submit symptoms → See live triage → Check the clinical dashboard
 
