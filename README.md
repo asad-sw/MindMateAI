@@ -69,8 +69,8 @@ This often leads to poor patient outcomes.
 
 This project was developed by **Team: NextGen Thinkers** for the IBM TechXchange 2025 Hackathon:
 
+- **Ibrahim Fofanah** – Lead Data Scientist
 - **Asad Waghdhare** – Data Scientist  
-- **Ibrahim Fofanah** – Data Scientist  
 - **Sourabh Pandya** – Solution Architect  
 
 
